@@ -16,10 +16,13 @@ class Player:
         return rand_num_from_dice_one+rand_num_from_dice_two
 
     def move(self, blocks):
-        # self.number_of_moves = self.roll()
-        self.number_of_moves = 15
+        # player rolls two dice to find the number of moves
+        self.number_of_moves = self.roll()
+        # player position changes to number of moves from the dice
         self.position += self.number_of_moves
         if self.position >= len(blocks):
+            # if number of moves greater and equal to the number of blocks on the board
+            # player passed GO and receive $1
             self.position -= len(blocks)
             self.cash += 1
             print(f'{self.name} passed GO and received $1')
