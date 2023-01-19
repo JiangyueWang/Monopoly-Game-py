@@ -11,6 +11,6 @@ class Dice:
                 self.dice_numbers.append(i)
 
     def generate_rand_num_from_dice(self):
-        random_index_of_dice = random.randint(0, len(self.dice_numbers))
+        random_index_of_dice = random.randint(0, len(self.dice_numbers)-1)
         dice_number = self.dice_numbers[random_index_of_dice]
         return dice_number

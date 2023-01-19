@@ -48,14 +48,14 @@ class Game:
         # create game board with block and players information displayed
         print('-----Generating the game board-----')
         self.add_blocks()
-        time.sleep(2)
+        # time.sleep(2)
         for i in range(len(self.blocks)):
             print(f'Block Name: {self.blocks[i].name}\nBlock Position: {i}')
             print('----------')
             # time.sleep(1)
         print('-----Adding players to the game-----')
         self.add_players()
-        time.sleep(2)
+        # time.sleep(2)
         for i in range(len(self.players)):
             print(
                 f'Player {i+1}: {self.players[i].name}\nCash ${self.players[i].cash}\nPosition: {self.players[i].position}')
@@ -66,14 +66,43 @@ class Game:
         self.display_welcome_message_and_game_rules()
         self.create_game_board()
         # game starts
-        print(f'-----Game Starts-----\n-----Round 1-----')
+        print(f'-----Game Starts-----')
         print(
             f'current player is {self.players[self.current_player_id].name}')
+        round = 0
+        while self.is_game_over != True:
+            # current player roll the dice and move on the board
+            current_player = self.players[self.current_player_id]
+            print(f'-----Round {round}-----')
 
-        # current player roll the dice and move on the board
-        currnet_player = self.players[self.current_player_id]
-        currnet_player.move(self.blocks)
-        current_player_position = currnet_player.position
-        current_player_landed_property = self.blocks[current_player_position].name
-        print(
-            f'Player {currnet_player.name} rolled {currnet_player.number_of_moves} landed on {current_player_landed_property}')
+            current_player.move(self.blocks)
+            current_player_position = current_player.position
+            current_player_landed_property = self.blocks[current_player_position]
+            print(
+                f'Player {current_player.name} rolled {current_player.number_of_moves} landed on {current_player_landed_property.name}')
+            print(
+                f'owner of the land is {current_player_landed_property.owner}')
+            # once player landed on the property it is not GO
+            if current_player_landed_property.name != "GO":
+                # if the property doesnt have an owner, player must buy
+                if current_player_landed_property.owner is None:
+                    self.is_game_over = current_player.buy_property(
+                        current_player_landed_property)
+                    if self.is_game_over:
+                        break
+                    else:
+                        for i in range(len(current_player.properties_owned)):
+                            print(
+                                f'{current_player.name} now owns property {current_player.properties_owned[i].name}')
+                else:
+                    # if the property has an owner, player needs to pay rent to the property owner
+                    print(f'property has an owner')
+                    if current_player_landed_property.owner is not current_player.name:
+                        current_player.pay_rent()
+
+            # once player landed on the property is GO goes to next round
+            if self.current_player_id < 3:
+                self.current_player_id += 1
+            else:
+                self.current_player_id = 0
+            round += 1
