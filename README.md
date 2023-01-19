@@ -16,7 +16,7 @@ Python
 3. Create game board, display game board with Go block and all properties, each property on the board has name, cost, rent, owner instance variables
 5. Create players, display player information, each player has a name, cash(staring with 16), position(starting position 0), properties_own(starting with an empty list)
 6. Game starts
-7. player_one chooses dice_one or dice_two to roll, once dice has chosen, a random number is picked from the dice, the random number is the number of moves the player_one will move on the board
+7. player_one rolls two dice, the number of moves will become the sum of randomly generated number from two dice
 8. Player_one moves to the position
 9. Display the position player_one has landed
 10. Check if player_one lands on a property or not, if player_one lands on GO, player_one's cash increased by $1, if player_one lands on a property, check whether the property has an owner, if no owner, player_one must buy it, if there is an owner of the property, player_one's cash needs to deduct the rent, owner of the property's cash increase by amount of rent
