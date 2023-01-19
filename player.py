@@ -1,5 +1,4 @@
 from dice import Dice
-import random
 
 
 class Player:
@@ -10,32 +9,28 @@ class Player:
         self.properties_owned = []
         self.number_of_moves = 0
 
-    def choose_dice_and_roll(self):
-        # ask player to choose which dice to roll
-        print('Please select a dice to roll')
-        self.player_select_dice = int(
-            input('Enter 1 for dice one, enter 2 for dice 2: '))
-        self.selected_dice = Dice(self.player_select_dice)
+    def roll(self):
+        # generate random numbers from dice one and two
+        rand_num_from_dice_one = Dice(1).generate_rand_num_from_dice()
+        rand_num_from_dice_two = Dice(2).generate_rand_num_from_dice()
+        return rand_num_from_dice_one+rand_num_from_dice_two
 
-        # randomly pick a number from player chosed cdice
-        self.index_of_dice_num = random.randint(
-            0, len(self.selected_dice.dice_numbers))
-        print(self.selected_dice.dice_numbers)
-        return self.selected_dice.dice_numbers[self.index_of_dice_num]
-
-    def move(self):
-        self.number_of_moves = self.choose_dice_and_roll()
+    def move(self, blocks):
+        # self.number_of_moves = self.roll()
+        self.number_of_moves = 15
         self.position += self.number_of_moves
-        pass
+        if self.position >= len(blocks):
+            self.position -= len(blocks)
+            self.cash += 1
+            print(f'{self.name} passed GO and received $1')
 
-    def buy_property(self, property):
+    def buy_property(self, landed_property):
         pass
 
     def pay_rent(self, property, amount):
         pass
 
 
-player = Player('Peter')
-print(player.position)
-player.move()
-print(player.position)
+# player1 = Player('Peter')
+# player1.move()
+# print(player1.number_of_moves)
