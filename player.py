@@ -33,6 +33,7 @@ class Player:
         if self.cash >= landed_property.cost:
             # if player has enough money to buy, append the property to self.properties_owned list and update property owner to player
             # deduct self.cash by the cost of property
+            print(f'{self.name} is buying the property')
             self.properties_owned.append(landed_property)
             landed_property.owner = self.name
             self.cash -= landed_property.cost
@@ -43,12 +44,20 @@ class Player:
             print(f'{self.name} goes bankrupt')
             return True
 
-    def pay_rent(self, property):
-        print('player pay rent')
-        # player needs to pay the rent to the property owner
+    def pay_rent(self, landed_property, landed_property_owner):
+
+        # player needs to pay the rent to the property owner if player has enough cash
         # if the property is own by another player except player himself/herself
         # player'cash deducted by rent, and property owner' cash increased by rent
-        pass
+        print(f'the owner of the property is {landed_property_owner.name}')
+        if self.cash >= landed_property.rent:
+            print(f'{self.name} is paying the rent to {landed_property.owner}')
+            self.cash -= landed_property.rent
+            landed_property_owner.cash += landed_property.rent
+            return False
+        else:
+            print(f'{self.name} goes bankrupt')
+            return True
 
 
 # player1 = Player('Peter')

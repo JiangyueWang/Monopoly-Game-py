@@ -71,35 +71,43 @@ class Game:
             f'current player is {self.players[self.current_player_id].name}')
         round = 0
         while self.is_game_over != True:
+            print(f'-----Round {round}-----')
             # current player roll the dice and move on the board
             current_player = self.players[self.current_player_id]
-            print(f'-----Round {round}-----')
-
+            # curren player move to the position
             current_player.move(self.blocks)
             current_player_position = current_player.position
             current_player_landed_property = self.blocks[current_player_position]
             print(
                 f'Player {current_player.name} rolled {current_player.number_of_moves} landed on {current_player_landed_property.name}')
-            print(
-                f'owner of the land is {current_player_landed_property.owner}')
             # once player landed on the property it is not GO
             if current_player_landed_property.name != "GO":
                 # if the property doesnt have an owner, player must buy
                 if current_player_landed_property.owner is None:
+                    print(
+                        f'The land does not have an owner yet {current_player.name} must buy it')
                     self.is_game_over = current_player.buy_property(
                         current_player_landed_property)
                     if self.is_game_over:
+                        print('game over!')
                         break
-                    else:
-                        for i in range(len(current_player.properties_owned)):
-                            print(
-                                f'{current_player.name} now owns property {current_player.properties_owned[i].name}')
-                else:
-                    # if the property has an owner, player needs to pay rent to the property owner
-                    print(f'property has an owner')
-                    if current_player_landed_property.owner is not current_player.name:
-                        current_player.pay_rent()
 
+                # if the property has an owner, player needs to pay rent to the property owner
+                else:
+                    if current_player_landed_property.owner is not current_player.name:
+                        print(
+                            f'property has an owner that is not {current_player.name}')
+                        # find the owner of the property
+                        for i in range(len(self.players)):
+                            if self.players[i].name == current_player_landed_property.owner:
+                                landed_property_owner = self.players[i]
+                                break
+                        # current player pays rent to the property owner
+                        self.is_game_over = current_player.pay_rent(
+                            current_player_landed_property, landed_property_owner)
+                        if self.is_game_over:
+                            print('game over!')
+                            break
             # once player landed on the property is GO goes to next round
             if self.current_player_id < 3:
                 self.current_player_id += 1
