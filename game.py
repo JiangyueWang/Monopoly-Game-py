@@ -13,9 +13,22 @@ class Game:
         self.is_game_over = False
 
     def display_welcome_message_and_game_rules(self):
-        # display welcome message
-        # display game rules
-        pass
+        print("Welcome to play the Woven Monopoly!")
+        print("-----Game Rules-----\n")
+        print("There are four players who take turns in the following order:")
+        print("Peter, Billy, Charlotte, Sweedal\n")
+        print("Players take turns to move on the game board\n")
+        time.sleep(3)
+        print(
+            "Each player has $16 cash with positioned on Go of the board to start the game")
+        print("Each player needs to roll two dice to move on the board, number of moves will define on the sum of number of two dice\n")
+        time.sleep(3)
+        print("If player lands on an unowned property, you must buy it")
+        print("If player lands on an owned property and you are not the onwer, you must pay the rent to the owner of the property\n")
+        time.sleep(3)
+        print("After each turn, check the amount of cash player has, if the player is bankrupt, game ends, whoever has the most money remaining is the winner")
+        print("If the player is not bankrupt, check whether the player owns all property of the sam colour, if no, rent of the properties remains, otherwise, rent is doubled for the properties")
+        print("Then move to the next player\n\n")
 
     def add_blocks(self):
         # add blockes and properties on to the game board
@@ -48,19 +61,19 @@ class Game:
         # create game board with block and players information displayed
         print('-----Generating the game board-----')
         self.add_blocks()
-        # time.sleep(2)
+        time.sleep(2)
         for i in range(len(self.blocks)):
             print(f'Block Name: {self.blocks[i].name}\nBlock Position: {i}')
             print('----------')
             # time.sleep(1)
         print('-----Adding players to the game-----')
         self.add_players()
-        # time.sleep(2)
+        time.sleep(2)
         for i in range(len(self.players)):
             print(
                 f'Player {i+1}: {self.players[i].name}\nCash ${self.players[i].cash}\nPosition: {self.players[i].position}')
             print('----------')
-            # time.sleep(1)
+            time.sleep(1)
 
     def find_num_of_properties_with_same_colour(self, current_player):
         colours_of_owned_properties = []
@@ -155,6 +168,7 @@ class Game:
             else:
                 self.current_player_id = 0
             round += 1
+            time.sleep(0.5)
 
         winner = self.find_winner()
         print(f'winner is {winner.name} has {winner.cash}')
