@@ -62,6 +62,16 @@ class Game:
             print('----------')
             # time.sleep(1)
 
+    def find_winner(self):
+        amount_of_cash = self.players[0].cash
+        winner_temp = self.players[0]
+        print('-----Calculating cash to find winner-----')
+        for player in self.players:
+            if player.cash > amount_of_cash:
+                amount_of_cash = player.cash
+                winner_temp = player
+        return winner_temp
+
     def play_game(self):
         self.display_welcome_message_and_game_rules()
         self.create_game_board()
@@ -114,3 +124,6 @@ class Game:
             else:
                 self.current_player_id = 0
             round += 1
+
+        winner = self.find_winner()
+        print(f'winner is {winner.name} has {winner.cash}')
