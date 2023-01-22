@@ -62,10 +62,37 @@ class Game:
             print('----------')
             # time.sleep(1)
 
+    def find_num_of_properties_with_same_colour(self, current_player):
+        colours_of_owned_properties = []
+        colour_counts_dict = {}
+
+        # put all the colours of current player's owned property into colours_of_owned_properties list
+        for property in current_player.properties_owned:
+            colours_of_owned_properties.append(property.colour)
+        # store colours of properties and number of the colours of owned property into colour_counts_dict
+        for colour in colours_of_owned_properties:
+            if colour in colour_counts_dict:
+                colour_counts_dict[colour] += 1
+            else:
+                colour_counts_dict[colour] = 1
+        # if the number of colour hints 2, which means the current player has collected all the colours of the property
+        # the rent of the property will be double
+        for key, value in colour_counts_dict.items():
+            if value == 2:
+                for property in current_player.properties_owned:
+                    if property.colour == key:
+                        property.double_rent()
+
+    def info_of_current_player(sefl, current_player, round):
+        print(
+            f'After Rround {round}, Player {current_player.name} has \nCash: {current_player.cash}\nOwned Properties:')
+        for property in current_player.properties_owned:
+            print(property.name)
+
     def find_winner(self):
         amount_of_cash = self.players[0].cash
         winner_temp = self.players[0]
-        print('-----Calculating cash to find winner-----')
+        print('-----Calculating the winner-----')
         for player in self.players:
             if player.cash > amount_of_cash:
                 amount_of_cash = player.cash
@@ -78,8 +105,8 @@ class Game:
         # game starts
         print(f'-----Game Starts-----')
         print(
-            f'current player is {self.players[self.current_player_id].name}')
-        round = 0
+            f'Current player is {self.players[self.current_player_id].name}')
+        round = 1
         while self.is_game_over != True:
             print(f'-----Round {round}-----')
             # current player roll the dice and move on the board
@@ -99,14 +126,14 @@ class Game:
                     self.is_game_over = current_player.buy_property(
                         current_player_landed_property)
                     if self.is_game_over:
-                        print('game over!')
+                        print('Game over!')
                         break
 
                 # if the property has an owner, player needs to pay rent to the property owner
                 else:
                     if current_player_landed_property.owner is not current_player.name:
                         print(
-                            f'property has an owner that is not {current_player.name}')
+                            f'Property has an owner that is not {current_player.name}')
                         # find the owner of the property
                         for i in range(len(self.players)):
                             if self.players[i].name == current_player_landed_property.owner:
@@ -116,8 +143,12 @@ class Game:
                         self.is_game_over = current_player.pay_rent(
                             current_player_landed_property, landed_property_owner)
                         if self.is_game_over:
-                            print('game over!')
+                            print('Game over!')
                             break
+            # find how number of properties that current player owned have same colour
+            self.find_num_of_properties_with_same_colour(current_player)
+            # display current player information after each round
+            self.info_of_current_player(current_player, round)
             # once player landed on the property is GO goes to next round
             if self.current_player_id < 3:
                 self.current_player_id += 1
